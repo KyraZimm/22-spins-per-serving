@@ -11,20 +11,26 @@ public class Player : MonoBehaviour
 
     float floorLength;
     float currSplinePos;
+    float dir;
 
     private void Start() {
         Vector3 startPos = floor.EvaluatePosition(0);
-        transform.position = startPos;
+        rb.MovePosition(startPos);
     }
 
     private void Update() {
-        floorLength = floor.Spline.GetLength();
+        dir = Input.GetAxis("Horizontal");
+    }
 
-        float dir = Input.GetAxis("Horizontal");
-        currSplinePos = Mathf.Clamp(currSplinePos + (dir * speed * Time.deltaTime), 0, floorLength);
+    private void FixedUpdate() {
+        floorLength = floor.Spline.GetLength();
+        currSplinePos = Mathf.Clamp(currSplinePos + (dir * speed * Time.fixedDeltaTime), 0, floorLength);
 
         var normalizedPos = currSplinePos / floorLength;
         floor.Evaluate(normalizedPos, out var pos, out var tangent, out var normal);
-        transform.position = pos;
+        rb.MovePosition(new Vector2(pos.x, pos.y));
+        //TO-DO: edit player rotation
     }
+
+
 }
