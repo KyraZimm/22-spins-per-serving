@@ -74,3 +74,6 @@ crashlytics-build.properties
 
 .vsconfig
 .vscode/
+
+# MAC Metadata
+.DS_Store
