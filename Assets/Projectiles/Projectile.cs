@@ -1,20 +1,18 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class Projectile : MonoBehaviour
 {
-    private Rigidbody rb;
-    private Vector3 vel;
+    private float maxLifetime = 100.0f;
+    private float age = 0.0f;
 
-    void Awake()
+    void Update()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-    }
-
-    public void Init(Vector3 velocity)
-    {
-        rb.velocity = velocity;
+        age += Time.deltaTime;
+        if (age > maxLifetime)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -22,5 +20,4 @@ public class Projectile : MonoBehaviour
         // TODO: Damage player before despawning
         Destroy(gameObject);
     }
-
 }
