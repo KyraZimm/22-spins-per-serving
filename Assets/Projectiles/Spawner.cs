@@ -76,7 +76,7 @@ public class Spawner : MonoBehaviour
         //activate bullet from pool
         Rigidbody2D projectile = bulletPool.Dequeue();
         projectile.transform.position = transform.position + (Vector3)offset;
-        //projectile.transform.rotation = Quaternion.LookRotation(dir); //don't need this line for now, but if we add oblong or assymetric sprites, this should rotate them in the dorrect direction
+        //projectile.transform.rotation = Quaternion.LookRotation(dir); //don't need this line for now, but if we add oblong or asymmetric sprites, this should rotate them in the dorrect direction
         projectile.gameObject.SetActive(true);
         projectile.velocity = dir.normalized * projectileSpeed;
 
