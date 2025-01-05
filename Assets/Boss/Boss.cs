@@ -1,18 +1,21 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    [SerializeField]
-    public Attack[] attacks;
+    [SerializeField] Attack[] attacks;
 
     private int currAttack = 0;
     private bool isAttacking = false;
 
     void Update()
     {
-        if (!isAttacking && attacks.Length > 0)
+        if (isAttacking)
+        {
+            return;
+        }
+
+        if (attacks.Length > 0)
         {
             isAttacking = true;
             StartCoroutine(Attack());
@@ -36,7 +39,8 @@ public class Boss : MonoBehaviour
     }
 }
 
-[SerializeField]
+/*[System.Serializable]*/
+[System.Serializable]
 public class Attack
 {
     public float duration;
@@ -46,7 +50,15 @@ public class Attack
 
 public abstract class AttackScript : MonoBehaviour
 {
-    public virtual void StartAttack() { }
-    public virtual void StopAttack() { }
-}
+    protected bool isActive = false;
 
+    public virtual void StartAttack()
+    {
+        isActive = true;
+    }
+
+    public virtual void StopAttack()
+    {
+        isActive = false;
+    }
+}

@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawner : MonoBehaviour
+public class Spawner : AttackScript
 {
     [Header("Projectile Instantiation")]
     [SerializeField] GameObject prefab;
@@ -10,22 +9,21 @@ public class Spawner : MonoBehaviour
     [SerializeField] float deactivateBulletDistance;
 
     [Header("Fire Settings")]
-    [SerializeField] bool enable = false;
     [SerializeField] float fireDelay = 1.0f;
     [SerializeField] float turnRate = Mathf.PI / 4.0f;
     [SerializeField] float projectileSpeed = 1.0f;
+    [SerializeField] float angle = 0.0f;
 
-    private float angle = 0.0f;
     private float timeSinceLastSpawn = 0.0f;
-
     private float minFireDelay = 0.01f;
 
     private Queue<Rigidbody2D> bulletPool = new Queue<Rigidbody2D>();
     private List<Rigidbody2D> activeBullets = new List<Rigidbody2D>();
 
-    private void Awake() {
+    private void Awake()
+    {
         for (int i = 0; i < startingPoolSize; i++)
-            CreatePooledBullet();        
+            CreatePooledBullet();
     }
 
     private void Update()
@@ -35,7 +33,7 @@ public class Spawner : MonoBehaviour
         timeSinceLastSpawn += Time.deltaTime;
         while (timeSinceLastSpawn >= fireDelay)
         {
-            if (enable)
+            if (isActive)
             {
                 float timeOffset = timeSinceLastSpawn - fireDelay;
                 float spawnAngle = angle - (turnRate * timeOffset);
@@ -49,9 +47,11 @@ public class Spawner : MonoBehaviour
         angle %= 2.0f * Mathf.PI;
 
         //check active bullets to see if they should be deactivated
-        for (int i = activeBullets.Count - 1; i >= 0; i--) {
+        for (int i = activeBullets.Count - 1; i >= 0; i--)
+        {
             float dist = (transform.position - activeBullets[i].transform.position).magnitude;
-            if (dist >= deactivateBulletDistance) {
+            if (dist >= deactivateBulletDistance)
+            {
                 activeBullets[i].gameObject.SetActive(false);
                 bulletPool.Enqueue(activeBullets[i]);
                 activeBullets.RemoveAt(i);
@@ -83,10 +83,10 @@ public class Spawner : MonoBehaviour
         activeBullets.Add(projectile);
     }
 
-    private void CreatePooledBullet() {
-        Rigidbody2D b = Instantiate(prefab).GetComponent<Rigidbody2D>();
-        bulletPool.Enqueue(b);
-        b.gameObject.SetActive(false);
+    private void CreatePooledBullet()
+    {
+        Rigidbody2D rb = Instantiate(prefab).GetComponent<Rigidbody2D>();
+        bulletPool.Enqueue(rb);
+        rb.gameObject.SetActive(false);
     }
-
 }
