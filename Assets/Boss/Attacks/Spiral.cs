@@ -9,8 +9,10 @@ public class SpiralAttack : MonoBehaviour, BossAttack
 
     [Header("Attack Settings")]
     [SerializeField] float fireDelay = 1.0f;
+    [Tooltip("Rate of turning in radians per second")]
     [SerializeField] float turnRate = Mathf.PI / 4.0f;
-    [SerializeField] float projectileSpeed = 1.0f;
+    [SerializeField] float projectileSpeed = 3.0f;
+    [Tooltip("Initial angle in radians")]
     [SerializeField] float initialAngle = 0.0f;
 
     private BulletPool bulletPool;
@@ -79,12 +81,11 @@ public class SpiralAttack : MonoBehaviour, BossAttack
 
         Rigidbody2D rb = bulletPool.active[idx].GetComponent<Rigidbody2D>();
         rb.transform.position = transform.position + (Vector3)offset;
-        /*rb.transform.rotation = Quaternion.LookRotation(dir);*/
+        rb.transform.rotation = Quaternion.LookRotation(Vector3.forward, dir);
         rb.velocity = dir * projectileSpeed;
     }
 
     // Remove bullets that are too far away
-    // FIXME: Shouldn't be needed if we add projectile collision against arena walls
     private void DespawnProjectiles()
     {
         for (int i = bulletPool.active.Count - 1; i >= 0; i--)
