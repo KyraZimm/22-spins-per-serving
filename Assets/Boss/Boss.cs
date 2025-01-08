@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    [SerializeField] Attack[] attacks;
+    [SerializeField] AttackOld[] attacks;
 
     private int currAttack = 0;
     private bool isAttacking = false;
@@ -25,7 +25,7 @@ public class Boss : MonoBehaviour
 
     private IEnumerator Attack()
     {
-        Attack attack = attacks[currAttack];
+        AttackOld attack = attacks[currAttack];
 
         if (attack != null)
         {
@@ -41,7 +41,7 @@ public class Boss : MonoBehaviour
 
 /*[System.Serializable]*/
 [System.Serializable]
-public class Attack
+public class AttackOld
 {
     public float duration;
     public float cooldown;
