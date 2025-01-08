@@ -9,16 +9,20 @@ public class Player : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float accelTime = 0.1f;
     [SerializeField] float decelTime = 0.1f;
+    [SerializeField] float firingInterval = 0.2f;
+    [SerializeField] GameObject bulletType;
+    [SerializeField] float bulletSpeed = 1f;
 
     private Rigidbody2D rb;
 
     private float dir = 0;
     private float vel = 0;
     private float pathPos = 0;
+    private float firingCooldown = 0;
 
     private void Awake()
     {
-      rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
@@ -34,10 +38,15 @@ public class Player : MonoBehaviour
     private void Update()
     {
         dir = Input.GetAxisRaw("Horizontal");
+        if (Input.GetButton("Fire1"))
+        {
+            Fire();
+        }
     }
 
     private void FixedUpdate()
     {
+        DecrementTimers();
         vel = calcVel(vel);
         pathPos += vel * Time.fixedDeltaTime;
         pathPos = wrapPath(pathPos);
@@ -48,6 +57,11 @@ public class Player : MonoBehaviour
 
         rb.MovePosition(new Vector2(pos.x, pos.y));
         rb.MoveRotation(angle);
+    }
+
+    private void DecrementTimers()
+    {
+        if (firingCooldown > 0) firingCooldown -= Time.fixedDeltaTime;
     }
 
     private float calcVel(float vel)
@@ -97,5 +111,32 @@ public class Player : MonoBehaviour
             return path.Spline.GetLength() + (pos % path.Spline.GetLength());
         }
         return pos % path.Spline.GetLength();
+    }
+
+    private void Fire()
+    {
+        Debug.Log("Firing");
+        if (firingCooldown <= 0)
+        {
+            if (bulletType == null)
+            {
+                Debug.LogError("No bullet type assigned!");
+                return;
+            }
+            GameObject bullet = Instantiate(bulletType, transform.position, Quaternion.identity);
+            // Calculate the direction towards (0, 0)
+            Vector2 direction = ((Vector2)Vector3.zero - (Vector2)transform.position).normalized;
+            // Apply velocity to the bullet's Rigidbody2D
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = direction * bulletSpeed;
+            }
+            else
+            {
+                Debug.LogError("Bullet prefab is missing a Rigidbody2D component!");
+            }
+            firingCooldown = firingInterval;
+        }
     }
 }
