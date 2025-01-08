@@ -43,13 +43,13 @@ Brainstorming
 
 ### Phase 1
 
-- [ ] Player shoot projectile
+- [x] Player shoot projectile
 - [ ] Boss take damage from projectile
 - [ ] Visible boss health bar
 - [ ] Player take damage from boss attack
 - [ ] Visible player health bar
 - [ ] Game manager. Transition between cutscenes and bosses
-- [ ] Make 3 attacks.
+- [x] Make 3 attacks.
 - [ ] Simple boss behavior. Define behavior to select when/where to attack
 
 ### Phase 2
