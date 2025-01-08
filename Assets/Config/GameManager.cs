@@ -1,5 +1,25 @@
 using UnityEngine;
 
+public enum GameState
+{
+    MainMenu,
+    Playing,
+    Paused,
+    GameOver
+}
+
+// Track general game progression
+public enum ProgressionState
+{
+    Cutscene0,
+    Boss1,
+    Custscene1,
+    Boss2,
+    Cutscene2,
+    Boss3,
+    Cutscene3,
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
