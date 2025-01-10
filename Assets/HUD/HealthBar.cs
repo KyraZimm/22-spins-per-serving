@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HealthBar : MonoBehaviour
 {
+    [SerializeField] TMP_Text labelText;
     [SerializeField] Slider healthBar;
 
     float maxHealth;
@@ -20,7 +22,8 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    public void Init(int maxHealth) {
+    public void Init(int maxHealth, string label) {
+        labelText.SetText(label);
         this.maxHealth = maxHealth;
         currHealth = maxHealth;
         healthBar.value = 1;

@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
         rb.MoveRotation(angle);
 
         CurrHealth = maxHealth;
-        if (healthBar != null) healthBar.Init(maxHealth);
+        if (healthBar != null) healthBar.Init(maxHealth, "Player");
     }
 
     private void Update()
