@@ -45,9 +45,9 @@ Brainstorming
 
 - [x] Player shoot projectile
 - [ ] Boss take damage from projectile
-- [ ] Visible boss health bar
-- [ ] Player take damage from boss attack
-- [ ] Visible player health bar
+- [x] Visible boss health bar
+- [x] Player take damage from boss attack
+- [x] Visible player health bar
 - [ ] Game manager. Transition between cutscenes and bosses
 - [x] Make 3 attacks.
 - [ ] Simple boss behavior. Define behavior to select when/where to attack
