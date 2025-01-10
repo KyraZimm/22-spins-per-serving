@@ -3,8 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Projectile : MonoBehaviour
 {
-    private float maxLifetime = 100.0f;
-    private float age = 0.0f;
+    protected float maxLifetime = 100.0f;
+    protected float age = 0.0f;
 
     void Update()
     {

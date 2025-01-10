@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class PlayerBullet : Projectile
 {
-    private float maxLifetime = 3.0f;
-    private float age = 0.0f;
-
     void Update()
     {
         age += Time.deltaTime;
@@ -14,11 +11,6 @@ public class PlayerBullet : Projectile
         {
             Destroy(gameObject);
         }
-    }
-
-    void FixedUpdate()
-    {
-
     }
 
     void OnTriggerEnter2D(Collider2D other)
