@@ -1,17 +1,24 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
+    [Header("Movement")]
     [SerializeField] SplineContainer path;
-
     [SerializeField] float speed;
     [SerializeField] float accelTime = 0.1f;
     [SerializeField] float decelTime = 0.1f;
+    [Header("Firing")]
     [SerializeField] float firingInterval = 0.2f;
     [SerializeField] GameObject bulletType;
     [SerializeField] float bulletSpeed = 1f;
+    [Header("Damage & Health")]
+    [SerializeField] int maxHealth;
+    [SerializeField] HealthBar healthBar;
+    [SerializeField] LayerMask takeDamageLayers;
+    [SerializeField] float takeDamageRadius; //NOTE: may be changing collision shape depending on final design for player sprite
 
     private Rigidbody2D rb;
 
@@ -19,6 +26,9 @@ public class Player : MonoBehaviour
     private float vel = 0;
     private float pathPos = 0;
     private float firingCooldown = 0;
+
+    public int CurrHealth { get; private set; }
+    public int MaxHealth {get { return maxHealth; } }
 
     private void Awake()
     {
@@ -33,6 +43,9 @@ public class Player : MonoBehaviour
 
         rb.MovePosition(new Vector2(pos.x, pos.y));
         rb.MoveRotation(angle);
+
+        CurrHealth = maxHealth;
+        if (healthBar != null) healthBar.Init(maxHealth);
     }
 
     private void Update()
@@ -42,6 +55,8 @@ public class Player : MonoBehaviour
         {
             Fire();
         }
+
+        CheckForDamage();
     }
 
     private void FixedUpdate()
@@ -138,5 +153,25 @@ public class Player : MonoBehaviour
             }
             firingCooldown = firingInterval;
         }
+    }
+
+    private void CheckForDamage() {
+        //NOTE: checking in a basic circular radius for now. May switch to using another casting method depending on final shape of player sprite
+        Collider2D[] contacts = Physics2D.OverlapCircleAll(transform.position, takeDamageRadius, LayerMask.GetMask("Projectiles"));
+        Debug.Log($"player made contact with {contacts.Length} damaging objects");
+
+        foreach (Collider2D contact in contacts) {
+            Damage damage = contact.GetComponent<Damage>();
+            if (damage != null){
+                TakeDamage(damage.Value);
+            }
+        }
+    }
+
+    public void TakeDamage(int damage) {
+        Debug.Log($"Player took {damage} damage.");
+        CurrHealth -= damage;
+        if (healthBar != null) healthBar.TakeDamage(damage);
+        if (CurrHealth <= 0) Debug.Log("Player died!");
     }
 }
