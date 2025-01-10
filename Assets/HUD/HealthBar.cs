@@ -7,28 +7,27 @@ public class HealthBar : MonoBehaviour
 {
     [SerializeField] Slider healthBar;
 
-    int maxHealth;
-    int currHealth;
-    int targetHealth;
+    float maxHealth;
+    float currHealth;
+
+    const float LERP_MULTIPLIER = 2f;
 
     public void Update() {
-        if (currHealth != targetHealth) {
-            float targetValue = targetHealth / maxHealth;
-            float currValue = currHealth / maxHealth;
-
-            float lerpedValue = Mathf.Lerp(currValue, targetValue, Time.deltaTime);
-            healthBar.value = lerpedValue;
+        float currValue = currHealth / maxHealth;
+        if (currValue != healthBar.value) {
+            float targetValue = Mathf.Lerp(healthBar.value, currValue, LERP_MULTIPLIER * Time.deltaTime);
+            healthBar.value = targetValue;
         }
     }
 
     public void Init(int maxHealth) {
         this.maxHealth = maxHealth;
         currHealth = maxHealth;
-        targetHealth = maxHealth;
         healthBar.value = 1;
     }
 
-    public void TakeDamage(int damage) {
-        targetHealth = Mathf.Clamp(targetHealth - damage, 0, maxHealth);        
+    public void TakeDamage(float damage) {
+        currHealth -= damage;
+        if (currHealth < 0) currHealth = 0;
     }
 }
