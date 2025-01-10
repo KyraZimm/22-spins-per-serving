@@ -158,18 +158,16 @@ public class Player : MonoBehaviour
     private void CheckForDamage() {
         //NOTE: checking in a basic circular radius for now. May switch to using another casting method depending on final shape of player sprite
         Collider2D[] contacts = Physics2D.OverlapCircleAll(transform.position, takeDamageRadius, LayerMask.GetMask("Projectiles"));
-        Debug.Log($"player made contact with {contacts.Length} damaging objects");
-
         foreach (Collider2D contact in contacts) {
             Damage damage = contact.GetComponent<Damage>();
             if (damage != null){
                 TakeDamage(damage.Value);
+                if (damage.DestroyOnContact) Destroy(contact.gameObject);
             }
         }
     }
 
     public void TakeDamage(int damage) {
-        Debug.Log($"Player took {damage} damage.");
         CurrHealth -= damage;
         if (healthBar != null) healthBar.TakeDamage(damage);
         if (CurrHealth <= 0) Debug.Log("Player died!");

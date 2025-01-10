@@ -15,9 +15,9 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    //NOTE: projectiles are currently being despawned by boss attacks and by player contact. Generic "Destroy" commands may confuse existing bullet pools
+    /*private void OnCollisionEnter(Collision collision)
     {
-        // TODO: Damage player before despawning
         Destroy(gameObject);
-    }
+    }*/
 }
