@@ -517,8 +517,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1190511363}
-  - component: {fileID: 1190511364}
-  - component: {fileID: 1190511365}
   - component: {fileID: 1190511367}
   - component: {fileID: 1190511366}
   m_Layer: 0
@@ -543,40 +541,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1190511364
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190511361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1a0a25fcac0f496188ee4a5422d2e06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 652471555160990301, guid: 93315576a01c940a38470258df1df780, type: 3}
-  fireDelay: 1
-  turnRate: 0.7853982
-  projectileSpeed: 3
-  initialAngle: 0
---- !u!114 &1190511365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190511361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 518813afeb58541e7a9d3df252291190, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 652471555160990301, guid: 93315576a01c940a38470258df1df780, type: 3}
-  count: 1
-  angle: 0
-  spreadAngle: 0.5235988
-  projectileSpeed: 3
 --- !u!120 &1190511366
 LineRenderer:
   serializedVersion: 2
