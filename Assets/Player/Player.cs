@@ -130,7 +130,7 @@ public class Player : MonoBehaviour
 
     private void Fire()
     {
-        Debug.Log("Firing");
+        //Debug.Log("Firing");
         if (firingCooldown <= 0)
         {
             if (bulletType == null)
