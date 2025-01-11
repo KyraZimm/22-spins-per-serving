@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Scatter : MonoBehaviour
-{
+public class Scatter : StateMachineBehaviour {
     [Header("Projectile")]
     [SerializeField] GameObject prefab;
-
     [Header("Attack Settings")]
     [SerializeField] int count = 5;
     [Tooltip("Attack angle in radians")]
@@ -15,45 +13,19 @@ public class Scatter : MonoBehaviour
     [SerializeField] float spreadAngle = Mathf.PI / 6.0f;
     [SerializeField] float projectileSpeed = 3.0f;
 
-    private bool active = true;
-
-    void Update()
-    {
-        if (!active)
-        {
-            return;
-        }
+    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        base.OnStateEnter(animator, stateInfo, layerIndex);
 
         float angleStep = count > 1 ? spreadAngle / (count - 1) : 0.0f;
         float startAngle = count > 1 ? angle - (spreadAngle / 2) : angle;
 
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             float spawnAngle = startAngle + (angleStep * i);
-            SpawnProjectile(spawnAngle);
+            SpawnProjectile(spawnAngle, animator.transform.position);
         }
-
-        active = false;
     }
-
-    public void StartAttack()
-    {
-        active = true;
-    }
-
-    public void StopAttack()
-    {
-        active = false;
-    }
-
-    public bool IsAttacking()
-    {
-        return active;
-    }
-
-    private void SpawnProjectile(float angle)
-    {
-        GameObject projectile = Instantiate(prefab, transform.position, Quaternion.identity);
+    private void SpawnProjectile(float angle, Vector2 spawnPos) {
+        GameObject projectile = Instantiate(prefab, spawnPos, Quaternion.identity);
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
 
         Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
@@ -61,3 +33,4 @@ public class Scatter : MonoBehaviour
         rb.velocity = dir * projectileSpeed;
     }
 }
+

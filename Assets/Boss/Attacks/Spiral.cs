@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
-public class SpiralAttack : MonoBehaviour, BossAttack
+public class Spiral : StateMachineBehaviour
 {
     [Header("Projectile")]
     [SerializeField] GameObject prefab;
@@ -22,53 +23,29 @@ public class SpiralAttack : MonoBehaviour, BossAttack
     private float angle = 0.0f;
     private float timeSinceLastSpawn = 0.0f;
 
-    void Awake()
-    {
-        bulletPool = new BulletPool();
-        bulletPool.Init(this, prefab, 100);
-    }
+    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        base.OnStateEnter(animator, stateInfo, layerIndex);
 
-    void Update()
-    {
-        if (!active)
-        {
-            return;
-        }
+        angle = initialAngle;
+        timeSinceLastSpawn = 0.0f;
+    }
+    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        base.OnStateUpdate(animator, stateInfo, layerIndex);
 
         fireDelay = Mathf.Max(minFireDelay, fireDelay);
         timeSinceLastSpawn += Time.deltaTime;
-        for (; timeSinceLastSpawn >= fireDelay; timeSinceLastSpawn -= fireDelay)
-        {
+        for (; timeSinceLastSpawn >= fireDelay; timeSinceLastSpawn -= fireDelay) {
             float timeOffset = timeSinceLastSpawn - fireDelay;
             float spawnAngle = angle - (turnRate * timeOffset);
-            SpawnProjectile(spawnAngle, timeOffset);
+            SpawnProjectile(spawnAngle, timeOffset, animator.transform.position);
 
         }
 
         angle += turnRate * Time.deltaTime;
         angle %= 2.0f * Mathf.PI;
-
-        DespawnProjectiles();
     }
 
-    public void StartAttack()
-    {
-        active = true;
-        angle = initialAngle;
-        timeSinceLastSpawn = 0.0f;
-    }
-
-    public void StopAttack()
-    {
-        active = false;
-    }
-
-    public bool IsAttacking()
-    {
-        return active;
-    }
-
-    private void SpawnProjectile(float angle, float age)
+    private void SpawnProjectile(float angle, float age, Vector2 spawnPos)
     {
         int idx = bulletPool.Spawn();
         if (idx < 0)
@@ -79,62 +56,10 @@ public class SpiralAttack : MonoBehaviour, BossAttack
         Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         Vector2 offset = dir * projectileSpeed * age;
 
-        Rigidbody2D rb = bulletPool.active[idx].GetComponent<Rigidbody2D>();
-        rb.transform.position = transform.position + (Vector3)offset;
+        GameObject projectile = Instantiate(prefab, spawnPos, Quaternion.identity);
+        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+        rb.transform.position = spawnPos + offset;
         rb.transform.rotation = Quaternion.LookRotation(Vector3.forward, dir);
         rb.velocity = dir * projectileSpeed;
-    }
-
-    // Remove bullets that are too far away
-    private void DespawnProjectiles()
-    {
-        for (int i = bulletPool.active.Count - 1; i >= 0; i--)
-        {
-            float dist = (transform.position - bulletPool.active[i].transform.position).magnitude;
-            if (dist >= 10.0f)
-            {
-                bulletPool.Despawn(i);
-            }
-        }
-    }
-}
-
-// A fixed size bullet pool
-public class BulletPool
-{
-    private Queue<Rigidbody2D> pool = new Queue<Rigidbody2D>();
-    public List<Rigidbody2D> active = new List<Rigidbody2D>();
-
-    public void Init(MonoBehaviour parent, GameObject prefab, int startingSize)
-    {
-        for (int i = 0; i < startingSize; i++)
-        {
-            GameObject bullet = MonoBehaviour.Instantiate(prefab, parent.transform.position, Quaternion.identity);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-
-            rb.gameObject.SetActive(false);
-            pool.Enqueue(rb);
-        }
-    }
-
-    // Return the index of the spawned projectile
-    public int Spawn()
-    {
-        if (pool.Count == 0)
-        {
-            return -1;
-        }
-
-        Rigidbody2D rb = pool.Dequeue();
-        rb.gameObject.SetActive(true);
-        active.Add(rb);
-        return active.Count - 1;
-    }
-
-    public void Despawn(int index)
-    {
-        active[index].gameObject.SetActive(false);
-        pool.Enqueue(active[index]);
-        active.RemoveAt(index);
     }
 }
