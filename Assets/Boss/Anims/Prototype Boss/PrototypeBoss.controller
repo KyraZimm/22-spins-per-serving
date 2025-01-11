@@ -178,7 +178,7 @@ AnimatorController:
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
-    m_DefaultBool: 1
+    m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: Scatter Attack
     m_Type: 9
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 652471555160990301, guid: 93315576a01c940a38470258df1df780, type: 3}
-  fireDelay: 1
+  fireDelay: 0.1
   turnRate: 0.7853982
   projectileSpeed: 3
   initialAngle: 20

@@ -74,6 +74,8 @@ MonoBehaviour:
     SpawnChance: 0.5
   - StateName: Scatter Attack
     SpawnChance: 0.5
+  startingPoolSize: 20
+  projectilePrefab: {fileID: 652471555160990301, guid: 93315576a01c940a38470258df1df780, type: 3}
 --- !u!1 &6610142611784455751
 GameObject:
   m_ObjectHideFlags: 0

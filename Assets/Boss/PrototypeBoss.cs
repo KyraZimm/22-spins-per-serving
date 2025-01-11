@@ -14,6 +14,11 @@ public class PrototypeBoss : MonoBehaviour
     [Header("Attack Settings")]
     [SerializeField] Vector2 attackIntervalRange;
     [SerializeField] AttackState[] attacks;
+    [Header("Projectile Pool Settings")]
+    [SerializeField] int startingPoolSize;
+    [SerializeField] GameObject projectilePrefab;
+
+    public BulletPool BulletPool { get; private set; }
 
     float attackTimer = 0;
     float cumulativeAttackSpawnChance = 0;
@@ -23,6 +28,9 @@ public class PrototypeBoss : MonoBehaviour
         ResetAttackTimer();
         for (int i = 0; i < attacks.Length; i++)
             cumulativeAttackSpawnChance += attacks[i].SpawnChance;
+
+        BulletPool = new BulletPool();
+        BulletPool.Init(projectilePrefab, startingPoolSize);
     }
 
     private void Update() {
@@ -48,7 +56,7 @@ public class PrototypeBoss : MonoBehaviour
             if (tracker >= r) return attacks[i].StateName;
         }
 
-        Debug.LogWarning($"CAUTION: Could not get random attack state for {nameof(PrototypeBoss)}. Defaulting to last attack in inspector.");
+        Debug.LogWarning($"CAUTION: Could not get random attack state for {nameof(PrototypeBoss)}. Defaulting to last attack in array.");
         return attacks[attacks.Length - 1].StateName;
     }
 }

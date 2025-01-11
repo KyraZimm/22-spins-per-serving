@@ -16,7 +16,6 @@ public class Spiral : StateMachineBehaviour
     [Tooltip("Initial angle in radians")]
     [SerializeField] float initialAngle = 0.0f;
 
-    private BulletPool bulletPool;
     private float minFireDelay = 0.01f;
 
     private bool active = false;

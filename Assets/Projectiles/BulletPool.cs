@@ -3,34 +3,59 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletPool {
-    private Queue<Rigidbody2D> pool = new Queue<Rigidbody2D>();
-    public List<Rigidbody2D> active = new List<Rigidbody2D>();
+    private Queue<Projectile> pool = new Queue<Projectile>();
+    private HashSet<Projectile> active = new HashSet<Projectile>();
 
-    public void Init(MonoBehaviour parent, GameObject prefab, int startingSize) {
-        for (int i = 0; i < startingSize; i++) {
-            GameObject bullet = MonoBehaviour.Instantiate(prefab, parent.transform.position, Quaternion.identity);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+    private GameObject prefab;
+    private Transform poolRoot;
 
-            rb.gameObject.SetActive(false);
-            pool.Enqueue(rb);
+    public void Init(GameObject prefab, int startingSize) {
+        //if any bullets exist for some reason (eg. uncleared Editor scene), destroy old pool
+        ClearPool();
+
+        poolRoot = new GameObject("Bullet Pool").transform;
+        poolRoot.position = Vector3.zero;
+
+        for (int i = 0; i < startingSize; i++)
+            CreateNewPooledBullet(prefab);
+    }
+
+    private void CreateNewPooledBullet(GameObject prefab) {
+        Projectile bullet = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity, poolRoot).GetComponent<Projectile>();
+        bullet.Init(this);
+        pool.Enqueue(bullet);
+    }
+
+    private void ClearPool() {
+        if (pool.Count > 0) {
+            foreach (var bullet in pool)
+                GameObject.Destroy(bullet.gameObject);
+            pool.Clear();
+        }
+        if (active.Count > 0) {
+            foreach (var bullet in active)
+                GameObject.Destroy(bullet.gameObject);
+            active.Clear();
         }
     }
 
-    // Return the index of the spawned projectile
-    public int Spawn() {
+    public Projectile Spawn(Vector2 spawnPos, Vector2 velocity) {
         if (pool.Count == 0) {
-            return -1;
+            CreateNewPooledBullet(prefab);
         }
 
-        Rigidbody2D rb = pool.Dequeue();
-        rb.gameObject.SetActive(true);
-        active.Add(rb);
-        return active.Count - 1;
+        Projectile bullet = pool.Dequeue();
+        bullet.gameObject.SetActive(true);
+        bullet.Spawn(spawnPos, velocity);
+        active.Add(bullet);
+        return bullet;
     }
 
-    public void Despawn(int index) {
-        active[index].gameObject.SetActive(false);
-        pool.Enqueue(active[index]);
-        active.RemoveAt(index);
+    public void Despawn(Projectile bullet) {
+        if (!active.Contains(bullet)) return;
+
+        bullet.gameObject.SetActive(false);
+        pool.Enqueue(bullet);
+        active.Remove(bullet);
     }
 }
