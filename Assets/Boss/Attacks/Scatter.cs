@@ -15,11 +15,11 @@ public class Scatter : MonoBehaviour
     [SerializeField] float spreadAngle = Mathf.PI / 6.0f;
     [SerializeField] float projectileSpeed = 3.0f;
 
-    private bool isActive = true;
+    private bool active = true;
 
     void Update()
     {
-        if (!isActive)
+        if (!active)
         {
             return;
         }
@@ -33,22 +33,22 @@ public class Scatter : MonoBehaviour
             SpawnProjectile(spawnAngle);
         }
 
-        isActive = false;
+        active = false;
     }
 
     public void StartAttack()
     {
-        isActive = true;
+        active = true;
     }
 
     public void StopAttack()
     {
-        isActive = false;
+        active = false;
     }
 
     public bool IsAttacking()
     {
-        return isActive;
+        return active;
     }
 
     private void SpawnProjectile(float angle)

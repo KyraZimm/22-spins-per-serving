@@ -18,7 +18,7 @@ public class SpiralAttack : MonoBehaviour, BossAttack
     private BulletPool bulletPool;
     private float minFireDelay = 0.01f;
 
-    private bool isActive = false;
+    private bool active = false;
     private float angle = 0.0f;
     private float timeSinceLastSpawn = 0.0f;
 
@@ -30,7 +30,7 @@ public class SpiralAttack : MonoBehaviour, BossAttack
 
     void Update()
     {
-        if (!isActive)
+        if (!active)
         {
             return;
         }
@@ -53,19 +53,19 @@ public class SpiralAttack : MonoBehaviour, BossAttack
 
     public void StartAttack()
     {
-        isActive = true;
+        active = true;
         angle = initialAngle;
         timeSinceLastSpawn = 0.0f;
     }
 
     public void StopAttack()
     {
-        isActive = false;
+        active = false;
     }
 
     public bool IsAttacking()
     {
-        return isActive;
+        return active;
     }
 
     private void SpawnProjectile(float angle, float age)
