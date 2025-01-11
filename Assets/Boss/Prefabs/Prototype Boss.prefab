@@ -68,14 +68,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 7486347531343532891}
-  attackIntervals: 0
+  attackIntervalRange: {x: 2, y: 5}
   attacks:
   - StateName: Spiral Attack
     SpawnChance: 0.5
-    Cooldown: 5
   - StateName: Scatter Attack
     SpawnChance: 0.5
-    Cooldown: 5
 --- !u!1 &6610142611784455751
 GameObject:
   m_ObjectHideFlags: 0

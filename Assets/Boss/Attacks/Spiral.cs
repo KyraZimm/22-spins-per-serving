@@ -47,17 +47,10 @@ public class Spiral : StateMachineBehaviour
 
     private void SpawnProjectile(float angle, float age, Vector2 spawnPos)
     {
-        int idx = bulletPool.Spawn();
-        if (idx < 0)
-        {
-            return;
-        }
-
         Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         Vector2 offset = dir * projectileSpeed * age;
 
-        GameObject projectile = Instantiate(prefab, spawnPos, Quaternion.identity);
-        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+        Rigidbody2D rb = Instantiate(prefab, spawnPos, Quaternion.identity).GetComponent<Rigidbody2D>();
         rb.transform.position = spawnPos + offset;
         rb.transform.rotation = Quaternion.LookRotation(Vector3.forward, dir);
         rb.velocity = dir * projectileSpeed;
