@@ -44,7 +44,7 @@ Brainstorming
 ### Phase 1
 
 - [x] Player shoot projectile
-- [ ] Boss take damage from projectile
+- [x] Boss take damage from projectile
 - [x] Visible boss health bar
 - [x] Player take damage from boss attack
 - [x] Visible player health bar
