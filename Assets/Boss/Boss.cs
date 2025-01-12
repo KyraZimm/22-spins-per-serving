@@ -14,6 +14,7 @@ public class Boss : MonoBehaviour
     [SerializeField] Animator controller;
     [SerializeField] MonoBehaviour test;
     [Header("Attack Settings")]
+    [SerializeField] Transform target;
     [SerializeField] Vector2 attackIntervalRange;
     [SerializeField] AttackState[] attacks;
     [SerializeField] Attack[] attachedAttackScripts;
@@ -25,6 +26,8 @@ public class Boss : MonoBehaviour
     [SerializeField] HealthBar healthBar;
 
     public BulletPool BulletPool { get; private set; }
+    public Transform Target { get { return target; } }
+    public float CurrHealth { get; private set; }
 
     float attackTimer = 0;
     float cumulativeAttackSpawnChance = 0;
@@ -33,7 +36,6 @@ public class Boss : MonoBehaviour
     string currAttackID = string.Empty;
     Dictionary<string, Attack> attackMapper = new Dictionary<string, Attack>();
 
-    public float CurrHealth { get; private set; }
 
     private void Awake() {
         foreach (Attack script in attachedAttackScripts) {
