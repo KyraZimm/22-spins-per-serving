@@ -21,7 +21,7 @@ public class PlayerBullet : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         // Bullets will only be destroyed when they collide with tangible objects (assuming that some objects will be intangible)
-        PrototypeBoss bossQuery = other.GetComponentInParent<PrototypeBoss>();
+        Boss bossQuery = other.GetComponentInParent<Boss>();
         if (bossQuery != null) {
             bossQuery.TakeDamage(damage);
             Destroy(gameObject);

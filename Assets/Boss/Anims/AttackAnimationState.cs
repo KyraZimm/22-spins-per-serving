@@ -7,7 +7,7 @@ public class AttackAnimationState : StateMachineBehaviour
     [SerializeField] string attackID;
     [SerializeField] float duration;
 
-    PrototypeBoss boss;
+    Boss boss;
     float timer;
 
 
@@ -15,8 +15,8 @@ public class AttackAnimationState : StateMachineBehaviour
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
         if (boss == null) {
-            boss = animator.GetComponent<PrototypeBoss>();
-            if (boss == null) Debug.LogError($"CRITICAL: There is no {nameof(PrototypeBoss)} class on the same GameObject as {animator.ToString()}. Add one or delete the Animator on {animator.gameObject.name}.");
+            boss = animator.GetComponent<Boss>();
+            if (boss == null) Debug.LogError($"CRITICAL: There is no {nameof(Boss)} class on the same GameObject as {animator.ToString()}. Add one or delete the Animator on {animator.gameObject.name}.");
         }
 
         boss.LaunchAttack(attackID);

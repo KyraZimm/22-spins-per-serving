@@ -1,8 +1,8 @@
 using UnityEngine;
 public abstract class Attack : MonoBehaviour {
     public string ID;
-    protected PrototypeBoss boss;
-    public virtual void Init(PrototypeBoss boss) {
+    protected Boss boss;
+    public virtual void Init(Boss boss) {
         this.boss = boss;
     }
     public abstract void StartAttack();
