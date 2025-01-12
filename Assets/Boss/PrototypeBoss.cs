@@ -6,14 +6,17 @@ public class PrototypeBoss : MonoBehaviour
 {
     [System.Serializable]
     private struct AttackState {
-        [Tooltip("Must match trigger name for animation state!")] public string StateName;
+        public string AttackID;
+        [Tooltip("Must match trigger name for animation state!")] public string AnimTriggerName;
         public float SpawnChance;
     }
 
     [SerializeField] Animator controller;
+    [SerializeField] MonoBehaviour test;
     [Header("Attack Settings")]
     [SerializeField] Vector2 attackIntervalRange;
     [SerializeField] AttackState[] attacks;
+    [SerializeField] Attack[] attachedAttackScripts;
     [Header("Projectile Pool Settings")]
     [SerializeField] int startingPoolSize;
     [SerializeField] GameObject projectilePrefab;
@@ -25,11 +28,19 @@ public class PrototypeBoss : MonoBehaviour
 
     float attackTimer = 0;
     float cumulativeAttackSpawnChance = 0;
-    int lastAttackMade;
+
+    int currAttackIndex = -1;
+    string currAttackID = string.Empty;
+    Dictionary<string, Attack> attackMapper = new Dictionary<string, Attack>();
 
     public float CurrHealth { get; private set; }
 
     private void Awake() {
+        foreach (Attack script in attachedAttackScripts) {
+            script.Init(this);
+            attackMapper.Add(script.ID, script);
+        }
+
         ResetAttackTimer();
         for (int i = 0; i < attacks.Length; i++)
             cumulativeAttackSpawnChance += attacks[i].SpawnChance;
@@ -42,36 +53,62 @@ public class PrototypeBoss : MonoBehaviour
     }
 
     private void Update() {
-        AnimatorStateInfo animState = controller.GetCurrentAnimatorStateInfo(0);
-        if (animState.IsName("Idle_Prototype")) {
-            attackTimer -= Time.deltaTime;
-            if (attackTimer <= 0) {
-                controller.SetTrigger(GetRandomAttack());
-                ResetAttackTimer(); //should theoretically get reset when the anim state ends instead, but I'll do it laterrrrr
+        if (currAttackIndex < 0) {
+            AnimatorStateInfo animState = controller.GetCurrentAnimatorStateInfo(0);
+            if (animState.IsName("Idle_Prototype")) {
+                attackTimer -= Time.deltaTime;
+                if (attackTimer <= 0) {
+                    SetNewAttackState(GetRandomAttackIndex());
+                }
             }
         }
+        else {
+            attackMapper[currAttackID].WhileAttacking();
+        }
     }
+
 
     private void ResetAttackTimer() {
         attackTimer = Random.Range(attackIntervalRange.x, attackIntervalRange.y);
     }
 
-    private string GetRandomAttack() {
+    private int GetRandomAttackIndex() {
         float r = Random.Range(0, cumulativeAttackSpawnChance);
         float tracker = 0;
         for (int i = 0; i < attacks.Length; i++) {
             tracker += attacks[i].SpawnChance;
-            if (tracker >= r) return attacks[i].StateName;
+            if (tracker >= r) return i;
         }
 
-        Debug.LogWarning($"CAUTION: Could not get random attack state for {nameof(PrototypeBoss)}. Defaulting to last attack in array.");
-        return attacks[attacks.Length - 1].StateName;
+        Debug.LogWarning($"CAUTION: Could not get random attack state for {nameof(PrototypeBoss)} on {gameObject.name}.");
+        return -1;
     }
 
+    private void SetNewAttackState(int index) {
+        currAttackIndex = index;
+        currAttackID = attacks[index].AttackID;
+
+        controller.SetTrigger(attacks[index].AnimTriggerName);
+    }
+
+    #region Extern
     public void TakeDamage(float damage) {
         CurrHealth -= damage;
         if (healthBar != null) healthBar.TakeDamage(damage);
 
         if (CurrHealth <= 0) Debug.Log("Boss is dead!");
     }
+
+    public void LaunchAttack(string attackID) {
+        attackMapper[currAttackID].StartAttack();
+    }
+
+    public void StopCurrAttack() {
+        attackMapper[currAttackID].StopAttack();
+        ResetAttackTimer();
+
+        currAttackID = string.Empty;
+        currAttackIndex = -1;
+    }
+    #endregion
 }

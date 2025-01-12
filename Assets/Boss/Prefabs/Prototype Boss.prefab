@@ -1,5 +1,87 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &705443830712816593
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3805689483171283184}
+  m_Layer: 0
+  m_Name: Attack Library
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3805689483171283184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705443830712816593}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7886292050088485195}
+  - {fileID: 7230452924799289304}
+  m_Father: {fileID: 7823120514592933706}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4119198142359252928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7886292050088485195}
+  - component: {fileID: 9190446893213870048}
+  m_Layer: 0
+  m_Name: Scatter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7886292050088485195
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4119198142359252928}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3805689483171283184}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9190446893213870048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4119198142359252928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518813afeb58541e7a9d3df252291190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: Scatter
+  count: 5
+  angle: 0
+  spreadAngle: 0.5235988
+  projectileSpeed: 3
 --- !u!1 &4382462040885838870
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,8 +93,6 @@ GameObject:
   - component: {fileID: 7823120514592933706}
   - component: {fileID: 7486347531343532891}
   - component: {fileID: 8790619381563950905}
-  - component: {fileID: 4986480794900628240}
-  - component: {fileID: 2724416364180631933}
   - component: {fileID: 3857201490583748859}
   m_Layer: 0
   m_Name: Prototype Boss
@@ -35,6 +115,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5162751992546378770}
+  - {fileID: 3805689483171283184}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7486347531343532891
@@ -71,50 +152,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 7486347531343532891}
+  test: {fileID: 8790619381563950905}
   attackIntervalRange: {x: 2, y: 5}
   attacks:
-  - StateName: Spiral Attack
+  - AttackID: Spiral
+    AnimTriggerName: Spiral Attack
     SpawnChance: 0.5
-  - StateName: Scatter Attack
+  - AttackID: Scatter
+    AnimTriggerName: Scatter Attack
     SpawnChance: 0.5
+  attachedAttackScripts:
+  - {fileID: 9190446893213870048}
+  - {fileID: 5792213052001056270}
   startingPoolSize: 20
   projectilePrefab: {fileID: 652471555160990301, guid: 93315576a01c940a38470258df1df780, type: 3}
   maxHealth: 100
   healthBar: {fileID: 0}
---- !u!114 &4986480794900628240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4382462040885838870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 518813afeb58541e7a9d3df252291190, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boss: {fileID: 8790619381563950905}
-  count: 5
-  angle: 0
-  spreadAngle: 0.5235988
-  projectileSpeed: 3
---- !u!114 &2724416364180631933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4382462040885838870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1a0a25fcac0f496188ee4a5422d2e06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boss: {fileID: 8790619381563950905}
-  fireDelay: 0.1
-  turnRate: 0.7853982
-  projectileSpeed: 3
-  initialAngle: 0
 --- !u!50 &3857201490583748859
 Rigidbody2D:
   serializedVersion: 4
@@ -262,3 +315,52 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!1 &8927307627547861486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7230452924799289304}
+  - component: {fileID: 5792213052001056270}
+  m_Layer: 0
+  m_Name: Spiral
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7230452924799289304
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927307627547861486}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3805689483171283184}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5792213052001056270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927307627547861486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1a0a25fcac0f496188ee4a5422d2e06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: Spiral
+  fireDelay: 1
+  turnRate: 0.7853982
+  projectileSpeed: 3
+  initialAngle: 0

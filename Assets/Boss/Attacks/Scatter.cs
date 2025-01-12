@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Scatter : MonoBehaviour
+public class Scatter : Attack
 {
-    [Header("Projectile")]
-    [SerializeField] PrototypeBoss boss;
-
     [Header("Attack Settings")]
     [SerializeField] int count = 5;
     [Tooltip("Attack angle in radians")]
@@ -15,8 +12,7 @@ public class Scatter : MonoBehaviour
     [SerializeField] float spreadAngle = Mathf.PI / 6.0f;
     [SerializeField] float projectileSpeed = 3.0f;
 
-    public void StartScatterAttack()
-    {
+    public override void StartAttack() {
         float angleStep = count > 1 ? spreadAngle / (count - 1) : 0.0f;
         float startAngle = count > 1 ? angle - (spreadAngle / 2) : angle;
 
@@ -25,12 +21,14 @@ public class Scatter : MonoBehaviour
             SpawnProjectile(spawnAngle);
         }
     }
+    public override void WhileAttacking() { }
+    public override void StopAttack() { }
 
     private void SpawnProjectile(float angle)
     {
         Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         /*rb.transform.rotation = Quaternion.LookRotation(Vector3.forward, dir);*/
 
-        boss.BulletPool.Spawn(transform.position, dir * projectileSpeed);
+        boss.BulletPool.Spawn(boss.transform.position, dir * projectileSpeed);
     }
 }

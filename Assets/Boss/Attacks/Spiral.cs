@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations;
 
-public class Spiral : MonoBehaviour {
-    [Header("Projectile")]
-    [SerializeField] PrototypeBoss boss;
+public class Spiral : Attack {
 
     [Header("Attack Settings")]
     [SerializeField] float fireDelay = 1.0f;
@@ -21,17 +18,28 @@ public class Spiral : MonoBehaviour {
     private float angle = 0.0f;
     private float timeSinceLastSpawn = 0.0f;
 
-    void Update() {
+    public override void StartAttack() {
+        active = true;
+        angle = initialAngle;
+        timeSinceLastSpawn = 0.0f;
+    }
+
+    public override void WhileAttacking() {
         if (!active) {
             return;
         }
+
         fireDelay = Mathf.Max(minFireDelay, fireDelay);
         timeSinceLastSpawn += Time.deltaTime;
         for (; timeSinceLastSpawn >= fireDelay; timeSinceLastSpawn -= fireDelay) {
             float timeOffset = timeSinceLastSpawn - fireDelay;
             float spawnAngle = angle - (turnRate * timeOffset);
-            SpawnProjectile(spawnAngle, timeOffset, transform.position);
+            SpawnProjectile(spawnAngle, timeOffset, boss.transform.position);
         }
+    }
+
+    public override void StopAttack() {
+        active = false;
     }
 
     private void SpawnProjectile(float angle, float age, Vector2 spawnPos) {
@@ -40,20 +48,6 @@ public class Spiral : MonoBehaviour {
 
         Projectile bullet = boss.BulletPool.Spawn(spawnPos + offset, dir * projectileSpeed);
         bullet.transform.rotation = Quaternion.LookRotation(Vector3.forward, dir);
-    }
-
-    public void StartSpiralAttack() {
-        active = true;
-        angle = initialAngle;
-        timeSinceLastSpawn = 0.0f;
-    }
-
-    public void StopSpiralAttack() {
-        active = false;
-    }
-
-    public bool IsAttacking() {
-        return active;
     }
 }
 
