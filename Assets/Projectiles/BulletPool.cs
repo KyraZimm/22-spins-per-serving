@@ -13,6 +13,8 @@ public class BulletPool {
         //if any bullets exist for some reason (eg. uncleared Editor scene), destroy old pool
         ClearPool();
 
+        this.prefab = prefab;
+
         poolRoot = new GameObject("Bullet Pool").transform;
         poolRoot.position = Vector3.zero;
 

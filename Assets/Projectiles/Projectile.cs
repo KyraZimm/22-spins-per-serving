@@ -5,6 +5,9 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] protected Rigidbody2D rb;
 
+    protected Vector2 xRange = new Vector2(-11f, 11f);
+    protected Vector2 yRange = new Vector2(-6f, 6f);
+
     protected float maxLifetime = 100.0f;
     protected float age = 0.0f;
 
@@ -22,6 +25,9 @@ public class Projectile : MonoBehaviour
         {
             Despawn();
         }
+
+        if (transform.position.x < xRange.x || transform.position.x > xRange.y) Despawn();
+        else if (transform.position.y < yRange.x || transform.position.y > yRange.y) Despawn();
     }
 
     public void Spawn(Vector2 spawnPos, Vector2 velocity) {

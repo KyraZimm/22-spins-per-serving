@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Scatter : StateMachineBehaviour {
+public class Scatter : MonoBehaviour
+{
     [Header("Projectile")]
-    [SerializeField] GameObject prefab;
+    [SerializeField] PrototypeBoss boss;
+
     [Header("Attack Settings")]
     [SerializeField] int count = 5;
     [Tooltip("Attack angle in radians")]
@@ -13,24 +15,22 @@ public class Scatter : StateMachineBehaviour {
     [SerializeField] float spreadAngle = Mathf.PI / 6.0f;
     [SerializeField] float projectileSpeed = 3.0f;
 
-    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        base.OnStateEnter(animator, stateInfo, layerIndex);
-
+    public void StartScatterAttack()
+    {
         float angleStep = count > 1 ? spreadAngle / (count - 1) : 0.0f;
         float startAngle = count > 1 ? angle - (spreadAngle / 2) : angle;
 
         for (int i = 0; i < count; i++) {
             float spawnAngle = startAngle + (angleStep * i);
-            SpawnProjectile(spawnAngle, animator.transform.position);
+            SpawnProjectile(spawnAngle);
         }
     }
-    private void SpawnProjectile(float angle, Vector2 spawnPos) {
-        GameObject projectile = Instantiate(prefab, spawnPos, Quaternion.identity);
-        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
 
+    private void SpawnProjectile(float angle)
+    {
         Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         /*rb.transform.rotation = Quaternion.LookRotation(Vector3.forward, dir);*/
-        rb.velocity = dir * projectileSpeed;
+
+        boss.BulletPool.Spawn(transform.position, dir * projectileSpeed);
     }
 }
-
