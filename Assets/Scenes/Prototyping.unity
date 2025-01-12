@@ -175,6 +175,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8790619381563950905, guid: d6c526d32e8047b46a962bb9cbd6a8fc, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 499502176460871848}
+    - target: {fileID: 8790619381563950905, guid: d6c526d32e8047b46a962bb9cbd6a8fc, type: 3}
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 108332149}
@@ -892,6 +896,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa528a790b4bf214cbe8eeccf0c8f3d6, type: 3}
+--- !u!4 &499502176460871848 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7501086559626633983, guid: aa528a790b4bf214cbe8eeccf0c8f3d6, type: 3}
+  m_PrefabInstance: {fileID: 499502176460871847}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9052350326738182546
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -931,6 +940,10 @@ PrefabInstance:
     - target: {fileID: 2201382078352955900, guid: 2a43833e088835a45a2a972e3e6d9521, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4540781983221482521, guid: 2a43833e088835a45a2a972e3e6d9521, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4999907764527946536, guid: 2a43833e088835a45a2a972e3e6d9521, type: 3}
       propertyPath: m_AnchorMax.x
