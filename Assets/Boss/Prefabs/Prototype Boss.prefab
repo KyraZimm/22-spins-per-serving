@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8790619381563950905}
   - component: {fileID: 4986480794900628240}
   - component: {fileID: 2724416364180631933}
+  - component: {fileID: 3857201490583748859}
   m_Layer: 0
   m_Name: Prototype Boss
   m_TagString: Untagged
@@ -78,6 +79,8 @@ MonoBehaviour:
     SpawnChance: 0.5
   startingPoolSize: 20
   projectilePrefab: {fileID: 652471555160990301, guid: 93315576a01c940a38470258df1df780, type: 3}
+  maxHealth: 100
+  healthBar: {fileID: 0}
 --- !u!114 &4986480794900628240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,6 +115,33 @@ MonoBehaviour:
   turnRate: 0.7853982
   projectileSpeed: 3
   initialAngle: 0
+--- !u!50 &3857201490583748859
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4382462040885838870}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &6610142611784455751
 GameObject:
   m_ObjectHideFlags: 0
